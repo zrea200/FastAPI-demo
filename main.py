@@ -23,3 +23,5 @@ def read_item(item_id: int, q: str = None):
 @app.post("/items/")
 def create_item(item: Item):
     return item
+
+# v1.0
