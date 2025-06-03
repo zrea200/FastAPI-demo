@@ -1,27 +1,26 @@
+from enum import Enum
+
 from fastapi import FastAPI
-from pydantic import BaseModel
+
+
+class ModelName(str, Enum):
+    alexnet = "alexnet"
+    resnet = "resnet"
+    lenet = "lenet"
+
 
 app = FastAPI()
 
-# 定义请求体模型
-class Item(BaseModel):
-    name: str
-    price: float
-    is_offer: bool = None
 
-# 根路径
-@app.get("/")
-def read_root():
-    return {"message": "FastAPI + uv 部署示例"}
+@app.get("/models/{model_name}")
+async def get_model(model_name: ModelName):
+    if model_name is ModelName.alexnet:
+        return {"model_name": model_name, "message": "Deep Learning FTW!"}
 
-# 路径参数示例
-@app.get("/items/{item_id}")
-def read_item(item_id: int, q: str = None):
-    return {"item_id": item_id, "q": q}
+    if model_name.value == "lenet":
+        return {"model_name": model_name, "message": "LeCNN all the images"}
 
-# POST 请求示例
-@app.post("/items/")
-def create_item(item: Item):
-    return item
+    return {"model_name": model_name, "message": "Have some residuals"}
 
-# v1.0
+
+#  v0.2
